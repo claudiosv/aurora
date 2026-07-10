@@ -20,7 +20,8 @@ public final class LightEngine: ObservableObject {
     @Published public private(set) var isRunning = false
     @Published public private(set) var isConnected = false
 
-    public let controller: LEDController
+    // Owned by the render queue after init (swappable at runtime via setController).
+    private var controller: LEDController
 
     private let renderQueue = DispatchQueue(label: "com.evgenypopov.aurora.render", qos: .userInitiated)
     private var timer: DispatchSourceTimer?          // touched only on renderQueue
@@ -81,6 +82,29 @@ public final class LightEngine: ObservableObject {
             self.timer?.cancel()
             self.timer = nil
             self.controller.disconnect()
+        }
+    }
+
+    /// Swap the output device at runtime (Rescan / hot-plug). `build` runs on the
+    /// render queue **after** the old device is disconnected — so it may re-scan
+    /// and re-open the serial port without racing the current connection — then
+    /// `completion` runs on the main thread.
+    public func replaceController(
+        build: @escaping @Sendable () -> LEDController,
+        completion: @escaping @Sendable () -> Void
+    ) {
+        renderQueue.async {
+            self.controller.disconnect()          // free the port first
+            let new = build()                     // detect/open with the port free
+            self.controller = new
+            _ = try? new.connect()
+            let connected = new.isConnected
+            let blank = Array(repeating: RGB.black, count: new.layout.count)
+            self.qLastComputed = blank
+            self.qLastPublished = blank
+            self.qReconnectTicks = 0
+            self.setPublished { self.isConnected = connected }
+            DispatchQueue.main.async(execute: completion)
         }
     }
 

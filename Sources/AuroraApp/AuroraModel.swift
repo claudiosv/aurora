@@ -7,33 +7,45 @@ import AuroraEngine
 import AuroraCapture
 import AuroraAudio
 
+/// Carries the detection result from the render-queue swap back to the main
+/// thread (written in `build`, read in `completion` — ordered, so safe).
+private final class RescanBox: @unchecked Sendable {
+    var detected: DetectedController?
+}
+
 /// App-level view model (the single source of truth the UI binds to). Wraps the
-/// engine + modes, forwards user edits as value-captured providers (race-free
-/// across the render thread), persists state, and republishes the live frame.
+/// engine + modes, supports swapping the controller at runtime (Rescan / hot-plug),
+/// and remembers installation direction + brightness **per controller model**.
 @MainActor
 final class AuroraModel: ObservableObject {
     let engine: LightEngine
-    /// Main-thread-only circadian instance used for the schedule graph + queries.
     let circadian: CircadianMode
     let screenSync: ScreenSyncController
     let musicSync: MusicSyncController
     let locationProvider = LocationProvider()
 
-    let detectedInfo: ControllerInfo?
-    let portPath: String?
-    let baseLayout: LEDLayout
+    /// Live device identity (updates on Rescan).
+    @Published private(set) var detectedInfo: ControllerInfo?
+    @Published private(set) var portPath: String?
+    @Published private(set) var ledCount: Int
+
     let outputGamma: Double = 2.8
+    private let simLedCount = 54
+
+    private var baseLayout: LEDLayout
+    private var deviceSettings: [String: DeviceSettings]
+    private var currentDeviceKey: String
 
     @Published var mode: Mode {
         didSet {
             engine.setMode(mode)
             updateCaptureState()
-            if previewHour != nil { previewHour = nil }   // drop any stale circadian scrub time
+            if previewHour != nil { previewHour = nil }
             persist()
         }
     }
     @Published var brightness: Double {
-        didSet { engine.setBrightness(brightness); persist() }
+        didSet { engine.setBrightness(brightness); saveDevice(); persist() }
     }
     @Published var circadianSettings: CircadianSettings {
         didSet {
@@ -42,10 +54,12 @@ final class AuroraModel: ObservableObject {
             persist()
         }
     }
+    /// Remembered per controller model.
     @Published var installationMethod: InstallationMethod {
         didSet {
             screenSync.updateLayout(previewLayout)
             musicSync.updateLayout(previewLayout)
+            saveDevice()
             persist()
         }
     }
@@ -77,20 +91,21 @@ final class AuroraModel: ObservableObject {
 
     init() {
         let saved = Persistence.load()
-
         let detected = DeviceManager.detect()
-        let controller: LEDController
-        if let d = detected {
-            controller = DeviceManager.makeController(for: d)
-        } else {
-            controller = SimulatedLEDController(layout: .strip(count: 54))
-        }
-        self.detectedInfo = detected?.info
-        self.portPath = detected?.portPath
 
-        let base = LEDLayout.fromLines(detected?.info.lines ?? [14, 26, 14])
-        self.baseLayout = base
-        let method = saved?.installationMethod ?? .default
+        let info = detected?.info
+        let key = info?.model ?? "simulator"
+        let lines = info?.lines ?? [14, 26, 14]
+
+        let devSettings = saved?.deviceSettings ?? [:]
+        let ds = devSettings[key]
+        let method = ds?.installationMethod ?? saved?.installationMethod ?? .default
+        let startBrightness = ds?.brightness ?? saved?.brightness ?? 1.0
+
+        let controller: LEDController = detected.map { DeviceManager.makeController(for: $0) }
+            ?? SimulatedLEDController(layout: .strip(count: simLedCount))
+
+        let base = LEDLayout.fromLines(lines)
         let spatial = base.applying(method)
 
         let settings = saved?.circadian ?? CircadianSettings(latitude: 55.75, longitude: 37.62)
@@ -107,8 +122,6 @@ final class AuroraModel: ObservableObject {
         self.musicSync = ms
 
         let startMode = saved?.mode ?? .circadian
-        let startBrightness = saved?.brightness ?? 1.0
-
         let staticColorStart = saved?.staticColor ?? ColorTemperature.rgb(kelvin: 2700)
         let gamma = 2.8
 
@@ -132,6 +145,13 @@ final class AuroraModel: ObservableObject {
             fps: 30
         )
         self.engine = eng
+
+        self.detectedInfo = info
+        self.portPath = detected?.portPath
+        self.ledCount = info?.ledCount ?? simLedCount
+        self.baseLayout = base
+        self.deviceSettings = devSettings
+        self.currentDeviceKey = key
 
         self.mode = startMode
         self.brightness = startBrightness
@@ -163,13 +183,50 @@ final class AuroraModel: ObservableObject {
     func togglePause() { engine.setPaused(isRunning) }
     func requestLocation() { locationProvider.request() }
     func startScreenCapture() { screenSync.start() }
+    func startMusicCapture() { musicSync.start() }
+
+    /// Re-detect the controller and swap to it live (Rescan / after a hot-plug),
+    /// restoring that model's remembered settings. Detection runs with the port
+    /// freed (inside the engine swap) so it can't fail on our own open handle.
+    func rescan() {
+        let box = RescanBox()
+        let simCount = simLedCount
+        engine.replaceController(
+            build: {
+                let detected = DeviceManager.detect()
+                box.detected = detected
+                if let detected { return DeviceManager.makeController(for: detected) }
+                return SimulatedLEDController(layout: .strip(count: simCount))
+            },
+            completion: { [weak self] in
+                MainActor.assumeIsolated { self?.applyRescan(box.detected) }
+            }
+        )
+    }
+
+    private func applyRescan(_ detected: DetectedController?) {
+        let info = detected?.info
+        let key = info?.model ?? "simulator"
+        detectedInfo = info
+        portPath = detected?.portPath
+        ledCount = info?.ledCount ?? simLedCount
+        baseLayout = LEDLayout.fromLines(info?.lines ?? [14, 26, 14])
+        currentDeviceKey = key
+        // Restore this model's remembered orientation + brightness (didSets
+        // re-point the capture layouts, the engine brightness, and persist).
+        let ds = deviceSettings[key]
+        installationMethod = ds?.installationMethod ?? .default
+        brightness = ds?.brightness ?? 1.0
+        screenSync.updateLayout(previewLayout)
+        musicSync.updateLayout(previewLayout)
+    }
 
     var deviceStatus: String {
         if let info = detectedInfo {
             let port = portPath.map { ($0 as NSString).lastPathComponent } ?? "?"
             return "\(info.model) · \(info.ledCount) LEDs · \(port)"
         }
-        return "Preview only · \(engine.controller.layout.count) LEDs"
+        return "Preview only · \(ledCount) LEDs"
     }
 
     var hasRealDevice: Bool { detectedInfo != nil }
@@ -193,15 +250,12 @@ final class AuroraModel: ObservableObject {
         if mode == .musicSync { musicSync.start() } else { musicSync.stop() }
     }
 
-    func startMusicCapture() { musicSync.start() }
+    private func saveDevice() {
+        deviceSettings[currentDeviceKey] = DeviceSettings(installationMethod: installationMethod, brightness: brightness)
+    }
 
     private func makeCircadianProvider() -> @Sendable (Date, LEDLayout) -> [RGB] {
         AuroraModel.circadianProvider(settings: circadianSettings, gamma: outputGamma)
-    }
-
-    private func staticProvider() -> @Sendable (Date, LEDLayout) -> [RGB] {
-        let color = staticColor.gammaCorrected(outputGamma)
-        return { _, layout in Array(repeating: color, count: layout.count) }
     }
 
     private static func circadianProvider(
@@ -215,6 +269,11 @@ final class AuroraModel: ObservableObject {
                 .scaled(by: mode.brightness(at: date))
             return Array(repeating: color, count: layout.count)
         }
+    }
+
+    private func staticProvider() -> @Sendable (Date, LEDLayout) -> [RGB] {
+        let color = staticColor.gammaCorrected(outputGamma)
+        return { _, layout in Array(repeating: color, count: layout.count) }
     }
 
     private func dateFor(hour: Double) -> Date {
@@ -232,7 +291,8 @@ final class AuroraModel: ObservableObject {
             screenSyncSaturation: screenSyncSaturation,
             musicMode: musicMode,
             musicSensitivity: musicSensitivity,
-            staticColor: staticColor
+            staticColor: staticColor,
+            deviceSettings: deviceSettings
         ))
     }
 }

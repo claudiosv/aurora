@@ -51,10 +51,20 @@ struct HomeView: View {
                 Toggle("Launch Aurora at login", isOn: $model.launchAtLogin)
                     .font(.callout)
 
-                Label(model.deviceStatus,
-                      systemImage: model.isConnected ? "cable.connector" : "eye")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                HStack(spacing: 8) {
+                    Label(model.deviceStatus,
+                          systemImage: model.hasRealDevice ? "cable.connector" : "eye")
+                        .font(.caption)
+                        .foregroundStyle(model.hasRealDevice ? Color.green : .secondary)
+                    Spacer()
+                    Button {
+                        model.rescan()
+                    } label: {
+                        Label("Rescan", systemImage: "arrow.clockwise")
+                    }
+                    .controlSize(.small)
+                    .help("Detect a controller you just plugged in, or switch to a different strip")
+                }
             }
             .padding(24)
         }
