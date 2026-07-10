@@ -18,6 +18,10 @@ Scene) · gamma-corrected warm tones · the installation-direction setup · the
 continuous render loop (no blanking/flicker) · auto-reconnect on a busy/replugged
 port.
 
+**Also verified on real hardware:** **SK0132** (32″, **77 LEDs**) — auto-detect,
+handshake, **RGB** channel order, left-to-right winding. Confirms the detection +
+catalog path works across models.
+
 > Everything else below is **expected to work** based on the same auto-detect
 > path and shared geometry, but has **not** been verified on physical hardware.
 > Reports (good or bad) for other models are very welcome — open an issue.
@@ -46,7 +50,7 @@ Legend: ✅ verified · 🟢 expected to work (auto-detected, supported geometry
 | SK0121 | 21″ | 51 | 🟢 |
 | SK0124 | 24″ | 54 | 🟢 |
 | **SK0127** | **27″** | **65** | ✅ **tested** |
-| SK0132 | 32″ | 77 | 🟢 |
+| SK0132 | 32″ | 77 | ✅ **tested** |
 | SK0134 | 34″ ultrawide | 71 | 🟢 |
 | SK0149 | 49″ ultrawide | 107 | 🟢 |
 

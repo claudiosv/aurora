@@ -77,8 +77,9 @@ controller, identifies the model and LED count via a handshake, and streams
 `Ada`-style frames. The protocol was reverse-engineered for interoperability —
 see [docs/protocol/](docs/protocol/).
 
-> **Tested on:** SK0127 — Skydimo 27″ monitor strip, **65 LEDs** (handshake,
-> RGB channel order, all four modes, gamma, install direction). The 21/24/27/32/34″
+> **Tested on real hardware:** **SK0127** (27″, 65 LEDs) and **SK0132** (32″,
+> 77 LEDs) — handshake, RGB channel order, auto-detect, gamma, install direction.
+> The 21/24/27/32/34″
 > 3- and 4-sided strips and the "A" series are auto-detected and expected to work.
 > Full model matrix: **[docs/COMPATIBILITY.md](docs/COMPATIBILITY.md)** ·
 > reports for other models welcome.
