@@ -1,0 +1,84 @@
+Sources/AuroraCore/ColorTemperature.swift
+  s_31d53feec0111c::t_ee4b6059bd9537 37-52
+Sources/AuroraCapture/ScreenSyncController.swift
+  s_31d53feec0111c::t_1975636eb7cd03 23,29-32,35,39
+  s_628739824faff9::t_7a52c4fcf9314b 65-78
+  s_31d53feec0111c::t_12b4676db82d8b 131,134
+  s_628739824faff9::t_1cdd851246403b 24,33-34,40,42
+  s_31d53feec0111c::t_83aefb0710e6d8 58-64
+Sources/AuroraChecks/main.swift
+  s_31d53feec0111c::t_5201135634e688 34-39,43
+  s_31d53feec0111c::t_5b27d8b37bb703 40-42
+Sources/AuroraEngine/LightEngine.swift
+  s_628739824faff9::t_3d7e2648adb386 64-65
+  s_df29e2b6a5e978::t_3e838c4383c0b5 103-123
+Sources/AuroraCapture/EdgeSampler.swift
+  s_31d53feec0111c::t_8e7d0fbae6a2b2 14-15,34-36
+Sources/AuroraApp/MenuBarView.swift
+  s_628739824faff9::t_7af7700c66e541 61-64
+  s_df29e2b6a5e978::t_e6e389ef61f6b7 58-59
+Sources/AuroraApp/AuroraModel.swift
+  s_628739824faff9::t_cd387f2362ad7c 124-125
+  s_31d53feec0111c::t_89f5d1ce7e2520 303
+  s_628739824faff9::t_68fe9f15afbeee 304
+  s_31d53feec0111c::t_eaadbf49bc34e4 123
+  s_31d53feec0111c::t_be9a54f4edb4e0 72-75
+  s_31d53feec0111c::t_152e446acd08e0 171
+  s_628739824faff9::t_8a23fd17f2e28d 172
+  s_628739824faff9::t_281f3d12e686fb 76-78
+Sources/AuroraCapture/ScreenCapturer.swift
+  s_628739824faff9::t_f248a2051f8347 16
+  s_628739824faff9::t_6517b9bc267230 34
+Scripts/package_app.sh
+  s_31d53feec0111c::t_d1a8638e923da2 26,29-36,39-41,44-46,53,55-60
+  s_31d53feec0111c::t_d60dc2606c0d0a 37-38,42-43
+  s_31d53feec0111c::t_84ee4ded2d68e6 78
+  s_31d53feec0111c::t_7763ab04ea2dc6 47-52,54,63-71,75-77,79-85
+Scripts/notarize.sh
+  s_31d53feec0111c::t_9fd41d3e2b6c21 1-34,38-59
+  s_31d53feec0111c::t_f28870fa6e5bb6 35-37
+Sources/AuroraApp/CircadianSettingsView.swift
+  s_df29e2b6a5e978::t_1865ef661f64a8 27-28
+Sources/AuroraApp/ScreenSyncSettingsView.swift
+  s_628739824faff9::t_1604e13582bb31 56
+  s_628739824faff9::t_d810e8767bc075 35-46
+  s_31d53feec0111c::t_7feb60ad4fe195 47-55,57-66,73-85
+  s_31d53feec0111c::t_08a05353483ba8 86
+Sources/AuroraApp/Persistence.swift
+  s_628739824faff9::t_8793f5938729e8 23
+  s_31d53feec0111c::t_a35d81f1dff9ee 22
+Scripts/Info.plist.template
+  s_31d53feec0111c::t_36442f0b19fcfa 13-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "1f53feedc83e058454ac763b4b3b115c9c7c25a5",
+  "prompts": {},
+  "sessions": {
+    "s_31d53feec0111c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e647f317-4902-4690-853a-af9d573a9c56",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Claudio Spiess <claudiosv@users.noreply.github.com>"
+    },
+    "s_628739824faff9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "742315b3-6bc0-4826-b44d-d664678952c5",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Claudio Spiess <claudiosv@users.noreply.github.com>"
+    },
+    "s_df29e2b6a5e978": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3e4806c7-5ec3-4368-9a4d-fbe362a894d5",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Claudio Spiess <claudiosv@users.noreply.github.com>"
+    }
+  }
+}
