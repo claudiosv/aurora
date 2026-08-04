@@ -1,0 +1,25 @@
+.github/ISSUE_TEMPLATE/config.yml
+  s_df29e2b6a5e978::t_70caf4514a3cf9 4,7
+README.md
+  s_df29e2b6a5e978::t_9c4f8ce48948af 52,67
+  s_df29e2b6a5e978::t_510b0b436f2566 13-14
+  s_df29e2b6a5e978::t_ea9a6e14a61e8f 20-22
+docs/TROUBLESHOOTING.md
+  s_df29e2b6a5e978::t_79e2490fd7d9a8 102
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "97933f4eb90c930fa853da90486aff131e0d6eb9",
+  "prompts": {},
+  "sessions": {
+    "s_df29e2b6a5e978": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3e4806c7-5ec3-4368-9a4d-fbe362a894d5",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Claudio Spiess <claudiosv@users.noreply.github.com>"
+    }
+  }
+}
