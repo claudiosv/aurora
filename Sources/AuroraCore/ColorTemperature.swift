@@ -34,4 +34,20 @@ public enum ColorTemperature {
         func clamp(_ v: Double) -> UInt8 { UInt8(max(0, min(255, v))) }
         return RGB(r: clamp(r), g: clamp(g), b: clamp(b))
     }
+
+    /// Caps how cool (blue-shifted) a color can read, by scaling it toward
+    /// `maxKelvin`'s reference white point — the same technique warm-color
+    /// filters (e.g. Night Shift) use. Used to keep Screen Sync from throwing
+    /// harsh blue-white light when the source content (a bright IDE, a white
+    /// webpage) is cooler than desired. A no-op at/above ~6500K, since that's
+    /// already roughly neutral daylight white — nothing captured from a screen
+    /// reads cooler than that in a way this should touch.
+    public static func capped(_ color: RGB, maxKelvin: Double) -> RGB {
+        guard maxKelvin < 6500 else { return color }
+        let ref = rgb(kelvin: maxKelvin)
+        func scale(_ v: UInt8, _ refV: UInt8) -> UInt8 {
+            UInt8((Double(v) * Double(refV) / 255).rounded())
+        }
+        return RGB(r: scale(color.r, ref.r), g: scale(color.g, ref.g), b: scale(color.b, ref.b))
+    }
 }

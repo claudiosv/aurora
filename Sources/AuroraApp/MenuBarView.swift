@@ -55,8 +55,13 @@ struct MenuBarView: View {
 
             HStack {
                 Button(model.isRunning ? "Pause" : "Resume") { model.togglePause() }
+                Button("Redetect") { model.rescan() }
+                    .help("Detect a controller you just plugged in, or switch to a different strip")
                 Spacer()
-                Button("Open Aurora…") { openWindow(id: "main") }
+                Button("Open Aurora…") {
+                    openWindow(id: "main")
+                    NSApp.activate(ignoringOtherApps: true)
+                }
             }
 
             Divider()

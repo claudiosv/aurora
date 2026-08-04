@@ -32,11 +32,56 @@ struct ScreenSyncSettingsView: View {
                 .padding(6)
             }
 
-            Text("Mirrors the colors at the edges of your screen onto the strip. Pick a region to sync only part of the display.")
+            GroupBox("Capture Frame Rate") {
+                HStack {
+                    Image(systemName: "gauge.low")
+                    Slider(value: $model.screenSyncCaptureFPS, in: 1...60, step: 1)
+                    Image(systemName: "gauge.high")
+                    Text("\(Int(model.screenSyncCaptureFPS)) fps")
+                        .frame(width: 48, alignment: .trailing).monospacedDigit()
+                }
+                .foregroundStyle(.secondary)
+                .padding(6)
+            }
+
+            GroupBox("Max Color Temperature") {
+                VStack(alignment: .leading, spacing: 8) {
+                    Toggle("Limit maximum temperature", isOn: maxKelvinEnabled)
+                    if model.screenSyncMaxKelvin != nil {
+                        HStack(spacing: 8) {
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(model.displayColor(kelvin: maxKelvinValue.wrappedValue).swiftUIColor)
+                                .frame(width: 24, height: 16)
+                                .overlay(RoundedRectangle(cornerRadius: 4).strokeBorder(.white.opacity(0.15)))
+                            Slider(value: maxKelvinValue, in: 1200...6500, step: 100)
+                            Text("\(Int(maxKelvinValue.wrappedValue))K")
+                                .frame(width: 50, alignment: .trailing).monospacedDigit()
+                        }
+                        .foregroundStyle(.secondary)
+                    }
+                }
+                .padding(6)
+            }
+
+            Text("Mirrors the colors at the edges of your screen onto the strip. Pick a region to sync only part of the display. Limiting the max temperature keeps bright, cool screen content (white pages, IDEs) from throwing harsh blue-white light.")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
+    }
+
+    private var maxKelvinEnabled: Binding<Bool> {
+        Binding(
+            get: { model.screenSyncMaxKelvin != nil },
+            set: { model.screenSyncMaxKelvin = $0 ? (model.screenSyncMaxKelvin ?? 5000) : nil }
+        )
+    }
+
+    private var maxKelvinValue: Binding<Double> {
+        Binding(
+            get: { model.screenSyncMaxKelvin ?? 5000 },
+            set: { model.screenSyncMaxKelvin = $0 }
+        )
     }
 
     @ViewBuilder

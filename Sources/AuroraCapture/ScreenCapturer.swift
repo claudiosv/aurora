@@ -13,6 +13,7 @@ final class ScreenCapturer: NSObject, SCStreamOutput {
     private var stream: SCStream?
     private let sampleQueue = DispatchQueue(label: "com.evgenypopov.aurora.capture", qos: .userInitiated)
     private let targetWidth = 96
+    var frameRate: Int = 30
 
     func start() async throws {
         guard stream == nil else { return }
@@ -30,7 +31,7 @@ final class ScreenCapturer: NSObject, SCStreamOutput {
         let config = SCStreamConfiguration()
         config.width = targetWidth
         config.height = height
-        config.minimumFrameInterval = CMTime(value: 1, timescale: 30)
+        config.minimumFrameInterval = CMTime(value: 1, timescale: CMTimeScale(frameRate))
         config.pixelFormat = kCVPixelFormatType_32BGRA
         config.queueDepth = 3
         config.showsCursor = false

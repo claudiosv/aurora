@@ -31,6 +31,16 @@ check(Int(cool.b) + 20 >= Int(cool.r), "cool is not red-dominant")
 _ = ColorTemperature.rgb(kelvin: -100); _ = ColorTemperature.rgb(kelvin: 100_000)
 check(true, "clamps out-of-range without crashing")
 
+let coolWhite = RGB(r: 255, g: 255, b: 255)
+let cappedWhite = ColorTemperature.capped(coolWhite, maxKelvin: 3000)
+check(cappedWhite.b < coolWhite.b, "capped white is less blue than uncapped")
+check(cappedWhite.r == coolWhite.r, "capped white keeps full red (reference is always 255)")
+check(ColorTemperature.capped(coolWhite, maxKelvin: 6500) == coolWhite, "6500K+ cap is a no-op")
+let warmSource = RGB(r: 255, g: 120, b: 40)
+let cappedWarm = ColorTemperature.capped(warmSource, maxKelvin: 3000)
+check(cappedWarm.r <= warmSource.r && cappedWarm.g <= warmSource.g && cappedWarm.b <= warmSource.b,
+      "capping never brightens a channel")
+
 print("RGB")
 check(RGB.white.scaled(by: 0) == .black, "scaled-by-0 is black")
 check(RGB.black.blended(to: .white, t: 0.5) == RGB(r: 128, g: 128, b: 128), "blend midpoint")

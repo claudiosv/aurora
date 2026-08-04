@@ -24,8 +24,8 @@ struct CircadianSettingsView: View {
 
             GroupBox("Color temperature") {
                 VStack(alignment: .leading, spacing: 8) {
-                    kelvinSlider("Day", \.dayKelvin, 4000...7000)
-                    kelvinSlider("Sunset", \.sunsetKelvin, 2500...4500)
+                    kelvinSlider("Day", \.dayKelvin, 1200...7000)
+                    kelvinSlider("Sunset", \.sunsetKelvin, 1200...4500)
                     kelvinSlider("Night", \.nightKelvin, 1200...3500)
                     Text("Lower Night = warmer / more orange (1200K ≈ amber, 1900K ≈ orange, 2700K ≈ warm yellow). Tap **Night** above to preview it on the strip.")
                         .font(.caption2)

@@ -61,8 +61,8 @@ public final class LightEngine: ObservableObject {
         setPublished { self.isRunning = true }
         // Everything touching `timer`/`controller` is confined to renderQueue
         // (serial), so the lifecycle is race-free and the guard is atomic.
-        renderQueue.async {
-            guard self.timer == nil else { return }
+        renderQueue.async { [weak self] in
+            guard let self, self.timer == nil else { return }
             _ = try? self.controller.connect()
             let connected = self.controller.isConnected
             self.setPublished { self.isConnected = connected }
@@ -99,11 +99,28 @@ public final class LightEngine: ObservableObject {
             self.controller = new
             _ = try? new.connect()
             let connected = new.isConnected
-            let blank = Array(repeating: RGB.black, count: new.layout.count)
-            self.qLastComputed = blank
-            self.qLastPublished = blank
             self.qReconnectTicks = 0
-            self.setPublished { self.isConnected = connected }
+
+            // Push a live frame right away so the strip actually lights up as
+            // soon as it's redetected, instead of sitting on a blanked frame
+            // until the next tick (or, while paused, indefinitely).
+            let frame: [RGB]
+            if let provider = self.providers[self.qMode] {
+                let now = self.qPreviewTime ?? Date()
+                let raw = provider(now, new.layout)
+                let b = self.qBrightness
+                frame = b >= 1.0 ? raw : raw.map { $0.scaled(by: b) }
+            } else {
+                frame = Array(repeating: RGB.black, count: new.layout.count)
+            }
+            self.qLastComputed = frame
+            self.qLastPublished = frame
+            new.render(frame)
+
+            self.setPublished {
+                self.isConnected = connected
+                self.lastFrame = frame
+            }
             DispatchQueue.main.async(execute: completion)
         }
     }

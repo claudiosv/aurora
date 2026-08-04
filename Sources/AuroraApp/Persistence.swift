@@ -19,6 +19,8 @@ struct SavedState: Codable {
     var installationMethod: InstallationMethod?       // legacy global (migration)
     var screenSyncSubMode: ScreenSyncSubMode?
     var screenSyncSaturation: Double?
+    var screenSyncMaxKelvin: Double?                  // nil = uncapped
+    var screenSyncCaptureFPS: Double?
     var musicMode: MusicMode?
     var musicSensitivity: Double?
     var staticColor: RGB?

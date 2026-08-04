@@ -11,7 +11,8 @@ public enum EdgeSampler {
         grid: PixelGrid,
         layout: LEDLayout,
         subMode: ScreenSyncSubMode,
-        saturation: Double = 1.0
+        saturation: Double = 1.0,
+        maxKelvin: Double? = nil
     ) -> [RGB] {
         guard grid.width > 0, grid.height > 0, !layout.points.isEmpty else {
             return Array(repeating: .black, count: layout.count)
@@ -30,7 +31,9 @@ public enum EdgeSampler {
             let px = Int((sx * Double(grid.width - 1)).rounded())
             let py = Int((sy * Double(grid.height - 1)).rounded())
             let avg = averageBlock(grid, cx: px, cy: py, radius: radius)
-            return saturation == 1.0 ? avg : saturated(avg, by: saturation)
+            let sat = saturation == 1.0 ? avg : saturated(avg, by: saturation)
+            guard let maxKelvin else { return sat }
+            return ColorTemperature.capped(sat, maxKelvin: maxKelvin)
         }
     }
 

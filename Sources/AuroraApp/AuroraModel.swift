@@ -69,6 +69,13 @@ final class AuroraModel: ObservableObject {
     @Published var screenSyncSaturation: Double {
         didSet { screenSync.saturation = screenSyncSaturation; persist() }
     }
+    /// Max color temperature Screen Sync colors are allowed to read as; nil = uncapped.
+    @Published var screenSyncMaxKelvin: Double? {
+        didSet { screenSync.maxKelvin = screenSyncMaxKelvin; persist() }
+    }
+    @Published var screenSyncCaptureFPS: Double {
+        didSet { screenSync.captureFPS = screenSyncCaptureFPS; persist() }
+    }
     @Published var musicMode: MusicMode {
         didSet { musicSync.mode = musicMode; persist() }
     }
@@ -113,7 +120,9 @@ final class AuroraModel: ObservableObject {
 
         let subMode = saved?.screenSyncSubMode ?? .full
         let saturation = saved?.screenSyncSaturation ?? 1.15
-        let ss = ScreenSyncController(spatialLayout: spatial, subMode: subMode, saturation: saturation)
+        let maxKelvin = saved?.screenSyncMaxKelvin
+        let captureFPS = saved?.screenSyncCaptureFPS ?? 30
+        let ss = ScreenSyncController(spatialLayout: spatial, subMode: subMode, saturation: saturation, maxKelvin: maxKelvin, captureFPS: captureFPS)
         self.screenSync = ss
 
         let musicModeStart = saved?.musicMode ?? .spectrum
@@ -159,6 +168,8 @@ final class AuroraModel: ObservableObject {
         self.installationMethod = method
         self.screenSyncSubMode = subMode
         self.screenSyncSaturation = saturation
+        self.screenSyncMaxKelvin = maxKelvin
+        self.screenSyncCaptureFPS = captureFPS
         self.musicMode = musicModeStart
         self.musicSensitivity = musicSens
         self.staticColor = staticColorStart
@@ -289,6 +300,8 @@ final class AuroraModel: ObservableObject {
             installationMethod: installationMethod,
             screenSyncSubMode: screenSyncSubMode,
             screenSyncSaturation: screenSyncSaturation,
+            screenSyncMaxKelvin: screenSyncMaxKelvin,
+            screenSyncCaptureFPS: screenSyncCaptureFPS,
             musicMode: musicMode,
             musicSensitivity: musicSensitivity,
             staticColor: staticColor,
