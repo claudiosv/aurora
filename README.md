@@ -49,10 +49,10 @@ a live on-screen preview.
 
 **Option A — download the app**
 
-1. Grab `Aurora-vX.Y.Z-macos.zip` from the [latest release](https://github.com/claudiosv/aurora/releases).
-2. Unzip and move **Aurora.app** to `/Applications`.
-3. First launch: right-click → **Open** (the build is ad-hoc signed, so Gatekeeper
-   asks once).
+1. Grab `Aurora-vX.Y.Z.dmg` from the [latest release](https://github.com/claudiosv/aurora/releases).
+2. Open the DMG and drag **Aurora.app** to **Applications**.
+3. Launch normally — releases are signed and notarized, so Gatekeeper won't
+   complain.
 4. For **Screen Sync** / **Music Sync**, grant **Screen Recording** in
    System Settings → Privacy & Security (Music Sync uses it for system audio),
    then quit and reopen Aurora.
