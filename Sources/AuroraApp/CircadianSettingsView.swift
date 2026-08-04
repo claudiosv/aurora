@@ -5,7 +5,7 @@ import AuroraCircadian
 /// Full circadian controls: override, color-temperature range, brightness,
 /// location, and a live 24-hour schedule preview with a time scrubber.
 struct CircadianSettingsView: View {
-    @ObservedObject var model: AuroraModel
+    @Bindable var model: AuroraModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {

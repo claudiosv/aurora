@@ -1,17 +1,18 @@
 import Foundation
-import Combine
+import Observation
 import AuroraCore
 
 /// Owns system-audio capture and turns it into LED frames. The render loop pulls
 /// `currentFrame(_:)` (computes the FFT + renders the active mode); the capturer
 /// pushes samples into a ring buffer. Shared state is lock-protected; per-frame
 /// render state is only touched from the render queue (single-threaded).
-public final class MusicSyncController: ObservableObject, @unchecked Sendable {
+@Observable
+public final class MusicSyncController: @unchecked Sendable {
     public enum Status: Equatable, Sendable {
         case idle, starting, capturing, needsPermission, failed(String)
     }
 
-    @Published public private(set) var status: Status = .idle
+    public private(set) var status: Status = .idle
 
     private let fftSize = 1024
     private let bandCount = 24

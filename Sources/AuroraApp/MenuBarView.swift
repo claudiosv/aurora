@@ -8,7 +8,7 @@ import AuroraAudio
 /// The menu-bar panel — the headline UX: switch modes, override the circadian
 /// schedule, see the live strip, set brightness, pause — all without a window.
 struct MenuBarView: View {
-    @ObservedObject var model: AuroraModel
+    @Bindable var model: AuroraModel
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
@@ -47,14 +47,14 @@ struct MenuBarView: View {
                 .labelsHidden()
             }
 
-            LEDStripView(frame: model.lastFrame)
+            LEDStripView(frame: model.engine.lastFrame)
                 .frame(height: 26)
                 .clipShape(RoundedRectangle(cornerRadius: 6))
 
             brightnessRow
 
             HStack {
-                Button(model.isRunning ? "Pause" : "Resume") { model.togglePause() }
+                Button(model.engine.isRunning ? "Pause" : "Resume") { model.togglePause() }
                 Button("Redetect") { model.rescan() }
                     .help("Detect a controller you just plugged in, or switch to a different strip")
                 Spacer()
@@ -79,7 +79,7 @@ struct MenuBarView: View {
             Text("Aurora").font(.headline)
             Spacer()
             Circle()
-                .fill(model.isConnected ? Color.green : Color.secondary)
+                .fill(model.engine.isConnected ? Color.green : Color.secondary)
                 .frame(width: 8, height: 8)
         }
     }

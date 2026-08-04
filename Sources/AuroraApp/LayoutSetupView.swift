@@ -5,7 +5,7 @@ import AuroraCore
 /// Mirrors the vendor setup step; lives in Settings. The grid preview updates
 /// live so you can match it to your real strip.
 struct LayoutSetupView: View {
-    @ObservedObject var model: AuroraModel
+    var model: AuroraModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {

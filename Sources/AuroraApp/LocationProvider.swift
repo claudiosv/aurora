@@ -1,15 +1,16 @@
 import Foundation
 import CoreLocation
-import Combine
+import Observation
 
 /// Thin CoreLocation wrapper that yields a one-shot coordinate for the circadian
 /// schedule. Degrades gracefully: if permission is denied or unavailable, the
 /// app keeps using the manually-set latitude/longitude.
 @MainActor
-final class LocationProvider: NSObject, ObservableObject {
+@Observable
+final class LocationProvider: NSObject {
     private let manager = CLLocationManager()
-    @Published private(set) var authorization: CLAuthorizationStatus
-    @Published private(set) var lastError: String?
+    private(set) var authorization: CLAuthorizationStatus
+    private(set) var lastError: String?
 
     /// Called on the main actor with (latitude, longitude) when a fix arrives.
     var onUpdate: ((Double, Double) -> Void)?

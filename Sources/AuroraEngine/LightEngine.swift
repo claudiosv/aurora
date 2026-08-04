@@ -1,5 +1,5 @@
 import Foundation
-import Combine
+import Observation
 import AuroraCore
 import AuroraDevice
 
@@ -13,12 +13,13 @@ import AuroraDevice
 ///
 /// Threading contract:
 /// - `q*` properties are touched **only** on `renderQueue`.
-/// - `@Published` properties are mutated **only** on the main thread.
+/// - Observable properties are mutated **only** on the main thread.
 /// - `controller` is used **only** on `renderQueue`.
-public final class LightEngine: ObservableObject, @unchecked Sendable {
-    @Published public private(set) var lastFrame: [RGB]
-    @Published public private(set) var isRunning = false
-    @Published public private(set) var isConnected = false
+@Observable
+public final class LightEngine: @unchecked Sendable {
+    public private(set) var lastFrame: [RGB]
+    public private(set) var isRunning = false
+    public private(set) var isConnected = false
 
     // Owned by the render queue after init (swappable at runtime via setController).
     private var controller: LEDController

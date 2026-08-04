@@ -4,7 +4,7 @@ import AuroraEngine
 
 @main
 struct AuroraApp: App {
-    @StateObject private var model = AuroraModel()
+    @State private var model = AuroraModel()
 
     var body: some Scene {
         MenuBarExtra("Aurora", systemImage: "sun.max.fill") {

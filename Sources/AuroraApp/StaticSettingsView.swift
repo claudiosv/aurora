@@ -3,7 +3,7 @@ import AuroraCore
 
 /// Static / Scene mode: a fixed color with quick presets.
 struct StaticSettingsView: View {
-    @ObservedObject var model: AuroraModel
+    var model: AuroraModel
 
     private let presets: [(name: String, color: RGB)] = [
         ("Warm", ColorTemperature.rgb(kelvin: 2700)),

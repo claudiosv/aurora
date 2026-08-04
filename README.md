@@ -66,7 +66,7 @@ Skydimo app holding the USB port, a missing permission, or the install direction
 ```bash
 git clone https://github.com/claudiosv/aurora.git && cd aurora
 swift build                                 # compile
-swift run AuroraChecks                      # run the logic checks
+swift test                                  # run the logic checks
 ./Scripts/package_app.sh release install    # build + install into /Applications
 ```
 

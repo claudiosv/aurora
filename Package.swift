@@ -25,19 +25,15 @@ let package = Package(
             name: "AuroraApp",
             dependencies: ["AuroraCore", "AuroraDevice", "AuroraCircadian", "AuroraEngine", "AuroraCapture", "AuroraAudio"]
         ),
-        // Lightweight CLI check harness. XCTest / Swift Testing both require full
-        // Xcode (absent on this dev machine), so logic checks run as an executable:
-        //   swift run AuroraChecks
-        // Migrate to Swift Testing once full Xcode is available (see ADR-0002).
-        .executableTarget(
-            name: "AuroraChecks",
-            dependencies: ["AuroraCore", "AuroraCircadian", "AuroraDevice", "AuroraCapture", "AuroraAudio"]
-        ),
         // Hardware bring-up CLI (M2): port detection, handshake, color/order test,
         // and live circadian on the real controller. See docs/protocol/.
         .executableTarget(
             name: "AuroraProbe",
             dependencies: ["AuroraCore", "AuroraDevice", "AuroraCircadian", "AuroraCapture", "AuroraAudio"]
+        ),
+        .testTarget(
+            name: "AuroraTests",
+            dependencies: ["AuroraCore", "AuroraCircadian", "AuroraDevice", "AuroraCapture", "AuroraAudio"]
         ),
     ]
 )

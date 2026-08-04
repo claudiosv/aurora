@@ -1,5 +1,5 @@
 import Foundation
-import Combine
+import Observation
 import AuroraCore
 import AuroraDevice
 import AuroraCircadian
@@ -17,7 +17,8 @@ private final class RescanBox: @unchecked Sendable {
 /// engine + modes, supports swapping the controller at runtime (Rescan / hot-plug),
 /// and remembers installation direction + brightness **per controller model**.
 @MainActor
-final class AuroraModel: ObservableObject {
+@Observable
+final class AuroraModel {
     let engine: LightEngine
     let circadian: CircadianMode
     let screenSync: ScreenSyncController
@@ -25,9 +26,9 @@ final class AuroraModel: ObservableObject {
     let locationProvider = LocationProvider()
 
     /// Live device identity (updates on Rescan).
-    @Published private(set) var detectedInfo: ControllerInfo?
-    @Published private(set) var portPath: String?
-    @Published private(set) var ledCount: Int
+    private(set) var detectedInfo: ControllerInfo?
+    private(set) var portPath: String?
+    private(set) var ledCount: Int
 
     let outputGamma: Double = 2.8
     private let simLedCount = 54
@@ -36,7 +37,7 @@ final class AuroraModel: ObservableObject {
     private var deviceSettings: [String: DeviceSettings]
     private var currentDeviceKey: String
 
-    @Published var mode: Mode {
+    var mode: Mode {
         didSet {
             engine.setMode(mode)
             updateCaptureState()
@@ -44,10 +45,10 @@ final class AuroraModel: ObservableObject {
             persist()
         }
     }
-    @Published var brightness: Double {
+    var brightness: Double {
         didSet { engine.setBrightness(brightness); saveDevice(); persist() }
     }
-    @Published var circadianSettings: CircadianSettings {
+    var circadianSettings: CircadianSettings {
         didSet {
             circadian.settings = circadianSettings
             engine.setProvider(makeCircadianProvider(), for: .circadian)
@@ -55,7 +56,7 @@ final class AuroraModel: ObservableObject {
         }
     }
     /// Remembered per controller model.
-    @Published var installationMethod: InstallationMethod {
+    var installationMethod: InstallationMethod {
         didSet {
             screenSync.updateLayout(previewLayout)
             musicSync.updateLayout(previewLayout)
@@ -63,38 +64,34 @@ final class AuroraModel: ObservableObject {
             persist()
         }
     }
-    @Published var screenSyncSubMode: ScreenSyncSubMode {
+    var screenSyncSubMode: ScreenSyncSubMode {
         didSet { screenSync.subMode = screenSyncSubMode; persist() }
     }
-    @Published var screenSyncSaturation: Double {
+    var screenSyncSaturation: Double {
         didSet { screenSync.saturation = screenSyncSaturation; persist() }
     }
     /// Max color temperature Screen Sync colors are allowed to read as; nil = uncapped.
-    @Published var screenSyncMaxKelvin: Double? {
+    var screenSyncMaxKelvin: Double? {
         didSet { screenSync.maxKelvin = screenSyncMaxKelvin; persist() }
     }
-    @Published var screenSyncCaptureFPS: Double {
+    var screenSyncCaptureFPS: Double {
         didSet { screenSync.captureFPS = screenSyncCaptureFPS; persist() }
     }
-    @Published var musicMode: MusicMode {
+    var musicMode: MusicMode {
         didSet { musicSync.mode = musicMode; persist() }
     }
-    @Published var musicSensitivity: Double {
+    var musicSensitivity: Double {
         didSet { musicSync.sensitivity = musicSensitivity; persist() }
     }
-    @Published var staticColor: RGB {
+    var staticColor: RGB {
         didSet { engine.setProvider(staticProvider(), for: .staticColor); persist() }
     }
-    @Published var launchAtLogin: Bool {
+    var launchAtLogin: Bool {
         didSet { LoginItem.setEnabled(launchAtLogin) }
     }
-    @Published var previewHour: Double? {
+    var previewHour: Double? {
         didSet { engine.setPreviewTime(previewHour.map(dateFor(hour:))) }
     }
-
-    @Published private(set) var lastFrame: [RGB] = []
-    @Published private(set) var isRunning: Bool = false
-    @Published private(set) var isConnected: Bool = false
 
     init() {
         let saved = Persistence.load()
@@ -175,10 +172,6 @@ final class AuroraModel: ObservableObject {
         self.staticColor = staticColorStart
         self.launchAtLogin = LoginItem.isEnabled
 
-        eng.$lastFrame.assign(to: &$lastFrame)
-        eng.$isRunning.assign(to: &$isRunning)
-        eng.$isConnected.assign(to: &$isConnected)
-
         locationProvider.onUpdate = { [weak self] lat, lon in
             guard let self else { return }
             self.circadianSettings.latitude = lat
@@ -191,7 +184,7 @@ final class AuroraModel: ObservableObject {
 
     // MARK: Intents
 
-    func togglePause() { engine.setPaused(isRunning) }
+    func togglePause() { engine.setPaused(engine.isRunning) }
     func requestLocation() { locationProvider.request() }
     func startScreenCapture() { screenSync.start() }
     func startMusicCapture() { musicSync.start() }

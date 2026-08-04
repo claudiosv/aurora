@@ -1,11 +1,12 @@
 import Foundation
-import Combine
+import Observation
 import AuroraCore
 
 /// Owns the screen capturer and the latest sampled frame. The render loop pulls
 /// `currentFrame()`; the capturer pushes new frames in via `ingest`. All shared
-/// state is lock-protected; `status` is published on the main thread for the UI.
-public final class ScreenSyncController: ObservableObject, @unchecked Sendable {
+/// state is lock-protected; `status` is updated on the main thread for the UI.
+@Observable
+public final class ScreenSyncController: @unchecked Sendable {
     public enum Status: Equatable, Sendable {
         case idle
         case starting
@@ -14,7 +15,7 @@ public final class ScreenSyncController: ObservableObject, @unchecked Sendable {
         case failed(String)
     }
 
-    @Published public private(set) var status: Status = .idle
+    public private(set) var status: Status = .idle
 
     private let lock = NSLock()
     private var _layout: LEDLayout

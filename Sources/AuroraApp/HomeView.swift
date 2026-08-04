@@ -4,14 +4,14 @@ import AuroraCore
 /// Main window: live preview, mode switcher, mode-specific settings (circadian
 /// today), and device status.
 struct HomeView: View {
-    @ObservedObject var model: AuroraModel
+    @Bindable var model: AuroraModel
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 header
 
-                LEDStripView(frame: model.lastFrame)
+                LEDStripView(frame: model.engine.lastFrame)
                     .frame(height: 48)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .shadow(color: .black.opacity(0.3), radius: 8, y: 4)

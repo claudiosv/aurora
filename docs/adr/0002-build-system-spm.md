@@ -36,22 +36,25 @@ microphone/screen capture).
 ## Testing
 
 `XCTest` and Swift Testing both ship with **full Xcode**, not Command Line
-Tools, so `swift test` fails here with `no such module 'XCTest' / 'Testing'`.
+Tools, so `swift test` originally failed here with `no such module 'XCTest' /
+'Testing'`.
 
-Decision: logic is verified by a small **CLI check harness** — an executable
-target `AuroraChecks` that runs assertions and exits non-zero on failure:
+Original decision: logic was verified by a small **CLI check harness** — an
+executable target `AuroraChecks` that ran assertions and exited non-zero on
+failure (`swift run AuroraChecks`). It covered color/Kelvin math, solar
+position, the byte-exact Skydimo packet format, and the circadian schedule.
+
+**Update (full Xcode now installed):** migrated to a real `AuroraTests` test
+target using Swift Testing (`@Test`/`#expect`) — the `AuroraChecks` harness
+was removed. Run with:
 
 ```bash
-swift run AuroraChecks
+swift test
 ```
-
-It covers color/Kelvin math, solar position, the byte-exact Skydimo packet
-format, and the circadian schedule. **Migrate to Swift Testing** once full Xcode
-is installed (the assertions port directly to `@Test`/`#expect`).
 
 ## Risk
 
 - Some Apple frameworks behave slightly differently when run as a bare SPM
   executable vs. a bundled `.app` (menu-bar presentation, TCC permission
   prompts). Mitigation: always test the **packaged** bundle for runtime/UX, use
-  `swift build` + `swift run AuroraChecks` for logic.
+  `swift build` + `swift test` for logic.

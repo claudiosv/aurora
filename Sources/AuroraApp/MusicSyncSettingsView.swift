@@ -5,8 +5,8 @@ import AuroraAudio
 
 /// Music Sync controls: reactive style, sensitivity, capture status + permission.
 struct MusicSyncSettingsView: View {
-    @ObservedObject var model: AuroraModel
-    @ObservedObject var musicSync: MusicSyncController
+    @Bindable var model: AuroraModel
+    var musicSync: MusicSyncController
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {

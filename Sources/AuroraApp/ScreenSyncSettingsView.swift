@@ -5,8 +5,8 @@ import AuroraCapture
 
 /// Screen Sync controls: sub-mode, saturation, capture status + permission prompt.
 struct ScreenSyncSettingsView: View {
-    @ObservedObject var model: AuroraModel
-    @ObservedObject var screenSync: ScreenSyncController
+    @Bindable var model: AuroraModel
+    var screenSync: ScreenSyncController
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
