@@ -1,0 +1,24 @@
+Package.swift
+  s_df29e2b6a5e978::t_d34c31ee7f50c5 42
+Sources/AuroraEngine/LightEngine.swift
+  s_df29e2b6a5e978::t_62160450ec967b 18
+  s_df29e2b6a5e978::t_5d00c90f433aba 185
+Sources/AuroraChecks/main.swift
+  s_df29e2b6a5e978::t_f7c33dbef3e620 11-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "98be3ac7d315c89872a9c87b487ee4fb9bcb6b55",
+  "prompts": {},
+  "sessions": {
+    "s_df29e2b6a5e978": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3e4806c7-5ec3-4368-9a4d-fbe362a894d5",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Claudio Spiess <claudiosv@users.noreply.github.com>"
+    }
+  }
+}
