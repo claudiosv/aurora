@@ -1,0 +1,19 @@
+.github/workflows/release.yml
+  s_df29e2b6a5e978::t_a7319c86e50ba3 1-76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "4765c57b6752ddd5f91cfbf34845a0ef57b3c644",
+  "prompts": {},
+  "sessions": {
+    "s_df29e2b6a5e978": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3e4806c7-5ec3-4368-9a4d-fbe362a894d5",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Claudio Spiess <claudiosv@users.noreply.github.com>"
+    }
+  }
+}
