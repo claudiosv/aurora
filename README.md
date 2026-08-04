@@ -10,12 +10,15 @@ circadian, screen sync & music sync, all switchable from your menu bar.**
 [![Platform](https://img.shields.io/badge/platform-macOS%2014%2B-black?logo=apple)](https://www.apple.com/macos/)
 [![Swift](https://img.shields.io/badge/Swift-6-orange?logo=swift)](https://www.swift.org)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
-[![Release](https://img.shields.io/github/v/release/b0ver/aurora?include_prereleases)](https://github.com/b0ver/aurora/releases)
-[![Stars](https://img.shields.io/github/stars/b0ver/aurora?style=social)](https://github.com/b0ver/aurora/stargazers)
+[![Release](https://img.shields.io/github/v/release/claudiosv/aurora?include_prereleases)](https://github.com/claudiosv/aurora/releases)
+[![Stars](https://img.shields.io/github/stars/claudiosv/aurora?style=social)](https://github.com/claudiosv/aurora/stargazers)
 
 </div>
 
 ---
+
+> This is a fork of [b0ver's Aurora](https://github.com/b0ver/aurora) that adds
+> additional features. b0ver's original work on this tool is much appreciated.
 
 Aurora is an independent, native reimagining of the Skydimo desktop app for the
 people who want their bias lighting to be *ambient automation*: a flux-style
@@ -46,7 +49,7 @@ a live on-screen preview.
 
 **Option A — download the app**
 
-1. Grab `Aurora-vX.Y.Z-macos.zip` from the [latest release](https://github.com/b0ver/aurora/releases).
+1. Grab `Aurora-vX.Y.Z-macos.zip` from the [latest release](https://github.com/claudiosv/aurora/releases).
 2. Unzip and move **Aurora.app** to `/Applications`.
 3. First launch: right-click → **Open** (the build is ad-hoc signed, so Gatekeeper
    asks once).
@@ -61,7 +64,7 @@ Skydimo app holding the USB port, a missing permission, or the install direction
 **Option B — build from source**
 
 ```bash
-git clone https://github.com/b0ver/aurora.git && cd aurora
+git clone https://github.com/claudiosv/aurora.git && cd aurora
 swift build                                 # compile
 swift run AuroraChecks                      # run the logic checks
 ./Scripts/package_app.sh release install    # build + install into /Applications

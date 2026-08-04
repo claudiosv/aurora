@@ -99,7 +99,7 @@ Circadian follows the sun for your location.
 ## Reporting a bug
 
 If self-serve didn't help, open an issue:
-**https://github.com/b0ver/aurora/issues**
+**https://github.com/claudiosv/aurora/issues**
 
 Please include:
 
