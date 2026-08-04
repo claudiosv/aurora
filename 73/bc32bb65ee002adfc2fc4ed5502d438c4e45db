@@ -1,0 +1,73 @@
+Tests/AuroraTests/PersistenceTests.swift
+  s_df29e2b6a5e978::t_2bf63a824f21e8 1-22
+Sources/AuroraApp/MusicSyncSettingsView.swift
+  s_df29e2b6a5e978::t_03ea5e77df40b7 8-9
+Tests/AuroraTests/ScreenSyncTests.swift
+  s_df29e2b6a5e978::t_f09dfa92ea920c 1-25
+Tests/AuroraTests/CircadianTests.swift
+  s_df29e2b6a5e978::t_4cfe3998772528 25-27,31,40
+  s_df29e2b6a5e978::t_18194ac5827965 1-24,28-30,32-39,41-66
+Tests/AuroraTests/SkydimoProtocolTests.swift
+  s_df29e2b6a5e978::t_7b7f8c324ab545 1-71
+.github/workflows/release.yml
+  s_df29e2b6a5e978::t_6e03762c32ffdd 25
+Sources/AuroraCapture/ScreenSyncController.swift
+  s_df29e2b6a5e978::t_12110b3d19a8e4 2,7-9,18
+docs/adr/0002-build-system-spm.md
+  s_df29e2b6a5e978::t_3b0c4bd847cdb1 60
+  s_df29e2b6a5e978::t_1328fd8337e22b 39-40,42-49,52
+README.md
+  s_df29e2b6a5e978::t_c4e3c131eb9231 69
+Sources/AuroraAudio/MusicSyncController.swift
+  s_df29e2b6a5e978::t_3d8604c3041ebf 2,9-10,15
+Sources/AuroraApp/AuroraModel.swift
+  s_df29e2b6a5e978::t_891bebc69f1fef 2
+  s_df29e2b6a5e978::t_e8729c4d594374 187
+  s_df29e2b6a5e978::t_db3c499a40957b 20-21,29-31
+  s_df29e2b6a5e978::t_e58d917f34c2d0 40,48,51,59,67,70,74,77,80,83,86,89,92
+Tests/AuroraTests/ColorTemperatureTests.swift
+  s_df29e2b6a5e978::t_d0d10efadfd237 1-92
+Tests/AuroraTests/AudioFFTTests.swift
+  s_df29e2b6a5e978::t_17d7bda6f4525a 1-44
+Sources/AuroraApp/HomeView.swift
+  s_df29e2b6a5e978::t_403bc2aa560c6f 7
+  s_df29e2b6a5e978::t_b2974c46d0b461 14
+Sources/AuroraApp/CircadianSettingsView.swift
+  s_df29e2b6a5e978::t_4530a9b2ee7a7a 8
+Sources/AuroraApp/ScreenSyncSettingsView.swift
+  s_df29e2b6a5e978::t_96834816be109e 8-9
+Sources/AuroraApp/StaticSettingsView.swift
+  s_df29e2b6a5e978::t_5b8937ece4f7e6 6
+Sources/AuroraApp/LayoutSetupView.swift
+  s_df29e2b6a5e978::t_50baca0b4afaa2 8
+Sources/AuroraApp/LocationProvider.swift
+  s_df29e2b6a5e978::t_db0ff64b545da5 3,9-10,12-13
+Package.swift
+  s_df29e2b6a5e978::t_da155daeaeee50 34-36
+  s_df29e2b6a5e978::t_b65baede8f604d 37
+Sources/AuroraEngine/LightEngine.swift
+  s_df29e2b6a5e978::t_e4b4a40e744fa5 2,16,18-22
+Sources/AuroraApp/MenuBarView.swift
+  s_df29e2b6a5e978::t_d78d6179087ca4 11
+  s_df29e2b6a5e978::t_709a3e61934296 50
+  s_df29e2b6a5e978::t_0b2b9582ba0a50 57
+  s_df29e2b6a5e978::t_1fd9ae2737c66f 82
+Sources/AuroraApp/AuroraApp.swift
+  s_df29e2b6a5e978::t_0dc2861a98c4bb 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "73bc32bb65ee002adfc2fc4ed5502d438c4e45db",
+  "prompts": {},
+  "sessions": {
+    "s_df29e2b6a5e978": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3e4806c7-5ec3-4368-9a4d-fbe362a894d5",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Claudio Spiess <claudiosv@users.noreply.github.com>"
+    }
+  }
+}
