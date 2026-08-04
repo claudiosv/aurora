@@ -1,0 +1,19 @@
+README.md
+  s_df29e2b6a5e978::t_a6251b1af564b9 52-55
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "cfdd9898729cda3461a2548bd781368024b69699",
+  "prompts": {},
+  "sessions": {
+    "s_df29e2b6a5e978": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3e4806c7-5ec3-4368-9a4d-fbe362a894d5",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Claudio Spiess <claudiosv@users.noreply.github.com>"
+    }
+  }
+}
