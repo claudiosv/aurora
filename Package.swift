@@ -4,9 +4,6 @@ import PackageDescription
 // Aurora — native macOS ambient lighting controller.
 // Built with SwiftPM so it can be compiled headlessly with Command Line Tools
 // (no full Xcode required). See docs/adr/0002-build-system-spm.md.
-//
-// We use the Swift 5 language mode for now to keep the early skeleton simple;
-// migration to full Swift 6 strict concurrency is tracked for a later milestone.
 let package = Package(
     name: "Aurora",
     platforms: [.macOS(.v14)],
@@ -42,6 +39,5 @@ let package = Package(
             name: "AuroraProbe",
             dependencies: ["AuroraCore", "AuroraDevice", "AuroraCircadian", "AuroraCapture", "AuroraAudio"]
         ),
-    ],
-    swiftLanguageModes: [.v5]
+    ]
 )

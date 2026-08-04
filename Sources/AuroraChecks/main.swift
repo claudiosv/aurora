@@ -8,7 +8,10 @@ import AuroraAudio
 // Minimal check harness (stands in for XCTest/Swift Testing, which need full
 // Xcode). Run with: swift run AuroraChecks  — exits non-zero on any failure.
 
-var failures = 0
+// A synchronous, single-threaded CLI script — there's no concurrency here to
+// race, but top-level `var`s in an executable's main.swift default to
+// MainActor isolation under Swift 6. `nonisolated(unsafe)` opts back out.
+nonisolated(unsafe) var failures = 0
 func check(_ condition: Bool, _ name: String) {
     if condition {
         print("  ✓ \(name)")

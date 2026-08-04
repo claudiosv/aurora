@@ -15,7 +15,7 @@ import AuroraDevice
 /// - `q*` properties are touched **only** on `renderQueue`.
 /// - `@Published` properties are mutated **only** on the main thread.
 /// - `controller` is used **only** on `renderQueue`.
-public final class LightEngine: ObservableObject {
+public final class LightEngine: ObservableObject, @unchecked Sendable {
     @Published public private(set) var lastFrame: [RGB]
     @Published public private(set) var isRunning = false
     @Published public private(set) var isConnected = false
@@ -182,7 +182,7 @@ public final class LightEngine: ObservableObject {
         }
     }
 
-    private func setPublished(_ work: @escaping () -> Void) {
+    private func setPublished(_ work: @escaping @Sendable () -> Void) {
         if Thread.isMainThread { work() } else { DispatchQueue.main.async(execute: work) }
     }
 }
