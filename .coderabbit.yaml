@@ -1,0 +1,31 @@
+# CodeRabbit configuration
+# https://docs.coderabbit.ai/reference/yaml-template
+
+language: en-US
+early_access: false
+tone_instructions: ""
+
+reviews:
+  profile: chill
+  # Reviews only run when explicitly requested (e.g. "@coderabbitai review"),
+  # not automatically on every push/PR open.
+  auto_review:
+    enabled: false
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: true
+  auto_title_placeholder: "@coderabbitai"
+  path_filters:
+    - "!**/*.lock"
+    - "!**/dist/**"
+    - "!**/build/**"
+    - "!**/*.min.js"
+  abort_on_close: true
+
+chat:
+  auto_reply: true
+
+knowledge_base:
+  opt_out: false
