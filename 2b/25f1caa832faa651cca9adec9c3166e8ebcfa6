@@ -1,0 +1,19 @@
+.coderabbit.yaml
+  s_cbe6c35bfb3bc9::t_935a3ba01ef407 1-31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "2b25f1caa832faa651cca9adec9c3166e8ebcfa6",
+  "prompts": {},
+  "sessions": {
+    "s_cbe6c35bfb3bc9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "34709eca-77cb-4bb8-8f61-87adf3ebc1ac",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Claudio Spiess <claudiosv@users.noreply.github.com>"
+    }
+  }
+}
